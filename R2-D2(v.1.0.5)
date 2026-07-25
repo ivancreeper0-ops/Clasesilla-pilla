@@ -1,0 +1,63 @@
+import discord
+from discord.ext import commands
+import random
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
+
+@bot.command()
+async def moneda(ctx):
+    numero = random.randint(1, 2)
+    if numero == 1:
+        await ctx.send("Cara")
+    elif numero == 2:
+        await ctx.send("Cruz")
+
+@bot.command()
+async def repeat(ctx, times: int, content='repitiendo...'):
+    """Repite un mensaje varias veces."""
+    for i in range(times):
+        await ctx.send(content)
+
+@bot.command()
+async def joined(ctx, member: discord.Member):
+    """menciona cuando un miembro se une."""
+    await ctx.send(f'{member.name} se a unido a la facción de discord {discord.utils.format_dt(member.joined_at)}')
+
+@bot.command()
+async def droid(ctx):
+    """mensiona quien es un droide"""
+    if ctx.invoked_subcommand is None:
+        await ctx.send(f'No, {ctx.subcommand_passed} no es un droide.')
+
+@droid.command(name='bot')
+async def _bot(ctx):
+    """soy un droide?"""
+    await ctx.send('si, soy un astrodroide.')
+
+@bot.command()
+async def comandlist(ctx):
+    """muestra la lista de comandos"""
+    commands_list = [command.name for command in bot.commands]
+    await ctx.send(f'Lista de comandos: {", ".join(commands_list)}')
+
+@bot.command()
+async def help(ctx):
+    """muestra la ayuda de los comandos"""
+    help_message = "Lista de comandos:\n"
+    for command in bot.commands:
+        help_message += f"{command.name}: {command.help}\n"
+    await ctx.send(help_message)
+
+@bot.command()
+   
+bot.run("token")

@@ -1,0 +1,121 @@
+import discord
+from discord.ext import commands
+import random
+# Intents necesarios
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# Diccionario de respuestas
+consejos = {
+    "estrategia1": "Para mantener un ecosistema saludable, es importante proteger la biodiversidad y reducir la contaminación.",
+    "estrategia2": "La reforestación y la conservación de hábitats naturales son clave para preservar la vida silvestre.",
+    "estrategia3": "El uso responsable de los recursos naturales y la reducción de residuos son esenciales para un ecosistema sostenible.",
+    "estrategia4": "La educación ambiental y la concienciación sobre la importancia de los ecosistemas son fundamentales para su preservación.",
+    "estrategia5": "La implementación de políticas de conservación y la participación comunitaria son vitales para proteger los ecosistemas.",
+}
+
+#ramas especializadas
+reciclaje = {
+    "metodo1": "Separar los residuos en orgánicos, reciclables y no reciclables.",
+    "metodo2": "Utilizar contenedores de separación para facilitar el reciclaje.",
+    "metodo3": "Reducir el consumo de productos de un solo uso y optar por alternativas reutilizables.",
+    "metodo4": "Participar en programas de reciclaje locales y comunitarios.",
+    "metodo5": "Educar a otros sobre la importancia del reciclaje y cómo hacerlo correctamente.",
+    "metodo6": "Evitar la contaminación de los materiales reciclables, asegurándose de que estén limpios y secos antes de desecharlos.",
+    "metodo7": "Reutilizar materiales siempre que sea posible, como envases y bolsas, para reducir la cantidad de residuos generados.",
+    "metodo8": "Apoyar a empresas y productos que utilicen materiales reciclados en su fabricación.",
+    "metodo9": "Participar en iniciativas de reciclaje comunitarias, como eventos de recolección de residuos electrónicos o campañas de reciclaje de ropa.",
+    "metodo10": "Fomentar la innovación en el diseño de productos para que sean más fáciles de reciclar y tengan un menor impacto ambiental."
+}
+
+agua = {
+    "metodo1": "Reducir el consumo de agua en el hogar mediante el uso de dispositivos de ahorro y la reparación de fugas.",
+    "metodo2": "Recolectar agua de lluvia para su uso en riego y limpieza.",
+    "metodo3": "Evitar la contaminación del agua mediante el uso responsable de productos químicos y detergentes.",
+    "metodo4": "Promover la conservación de fuentes de agua naturales, como ríos y lagos.",
+    "metodo5": "Participar en programas de educación sobre la importancia del agua y su conservación.",
+    "metodo6": "Implementar sistemas de riego eficientes en la agricultura para reducir el desperdicio de agua.",
+    "metodo7": "Fomentar la reutilización del agua en procesos industriales y domésticos siempre que sea posible.",
+    "metodo8": "Apoyar políticas y regulaciones que protejan los recursos hídricos y promuevan su uso sostenible.",
+    "metodo9": "Participar en iniciativas comunitarias para limpiar y proteger cuerpos de agua locales, como ríos, lagos y playas.",
+    "metodo10": "Educar a otros sobre la importancia del agua y cómo conservarla, promoviendo hábitos responsables en el uso diario."
+}
+
+energia = {
+    "metodo1": "Apagar luces y electrodomésticos cuando no se estén utilizando.",
+    "metodo2": "Utilizar bombillas de bajo consumo o LED para reducir el consumo de energía.",
+    "metodo3": "Aprovechar la luz natural durante el día en lugar de encender luces artificiales.",
+    "metodo4": "Desconectar cargadores y dispositivos electrónicos cuando no estén en uso.",
+    "metodo5": "Utilizar electrodomésticos eficientes energéticamente y mantenerlos en buen estado.",
+    "metodo6": "Implementar sistemas de energía renovable, como paneles solares o turbinas eólicas, siempre que sea posible.",
+    "metodo7": "Aislar adecuadamente los hogares y edificios para reducir la pérdida de calor o frío y disminuir la necesidad de calefacción o aire acondicionado.",
+    "metodo8": "Fomentar el uso del transporte público, bicicletas o caminar en lugar de utilizar vehículos privados para reducir el consumo de combustible.",
+    "metodo9": "Participar en programas de eficiencia energética y auditorías para identificar áreas de mejora en el consumo de energía.",
+    "metodo10": "Educar a otros sobre la importancia del ahorro energético y cómo implementar prácticas sostenibles en su vida diaria."
+}
+
+materiales = {
+    "metodo1": "Optar por productos hechos de materiales biodegradables y compostables siempre que sea posible.",
+    "metodo2": "Evitar el uso de plásticos de un solo uso y buscar alternativas reutilizables o reciclables.",
+    "metodo3": "Participar en programas de reciclaje y compostaje para reducir la cantidad de residuos enviados a los vertederos.",
+    "metodo4": "Apoyar a empresas y marcas que utilicen materiales sostenibles en sus productos y envases.",
+    "metodo5": "Educar a otros sobre la importancia de utilizar materiales sostenibles y cómo hacerlo en su vida diaria.",
+    "metodo6": "Fomentar la innovación en el diseño de productos para que sean más fáciles de reciclar y tengan un menor impacto ambiental.",
+    "metodo7": "Reducir el consumo de productos innecesarios y optar por opciones duraderas y de calidad.",
+    "metodo8": "Participar en iniciativas comunitarias para limpiar áreas públicas y promover el uso responsable de materiales.",
+    "metodo9": "Investigar y elegir productos con certificaciones ambientales que garanticen su sostenibilidad.",
+    "metodo10": "Promover la economía circular mediante la reutilización, reparación y reciclaje de materiales siempre que sea posible."
+}
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def info(ctx):
+    await ctx.send(f'Hola, soy {bot.user}, estoy especializado en dar estrategias para el cuidado de ecosistemas planetarios que contienen vida. Puedo dar consejos sobre cómo mantener un ecosistema saludable y sostenible. ¡Pregúntame cualquier cosa relacionada con el cuidado del medio ambiente!')
+
+@bot.command()
+async def consejo(ctx, estrategia: str):
+    if estrategia in consejos:
+        await ctx.send(consejos[estrategia])
+    else:
+        await ctx.send("No existe esta estrategia.")
+
+@bot.command()
+async def listaconsejos(ctx):
+    lista = "\n".join(consejos.keys())
+    await ctx.send(f"Lista de estrategias disponibles:\n{lista}")
+
+@bot.command()
+async def ramas(ctx):
+    await ctx.send("Estoy especializado en las siguientes ramas de conocimiento:")
+    await ctx.send("- reciclaje y gestión de residuos")
+    await ctx.send("- Gestión sostenible del agua")
+    await ctx.send("- Métodos de ahorro de energía electrica")
+    await ctx.send("- utilización de materiales biodegradables y compostables para reducir la contaminación y el impacto ambiental")
+    await ctx.send("Puedes consultarme colocando estos códigos en tu mensaje: R para reciclaje, A para agua, Y para energía y M para materiales sostenibles.")
+
+@bot.command()
+async def R(ctx):
+    reciclaje = random.choice(list(reciclaje.values()))
+    await ctx.send(f"Consejo de reciclaje: {reciclaje}")
+
+@bot.command()
+async def A(ctx):
+    agua = random.choice(list(agua.values()))
+    await ctx.send(f"Consejo de conservación del agua: {agua}")
+
+@bot.command()
+async def Y(ctx):
+    energia = random.choice(list(energia.values()))
+    await ctx.send(f"Consejo de ahorro de energía: {energia}")
+
+@bot.command()
+async def M(ctx):
+    materiales = random.choice(list(materiales.values()))
+    await ctx.send(f"Consejo de uso de materiales sostenibles: {materiales}")
+
+bot.run("Aqui va tu token de bot de Discord")
